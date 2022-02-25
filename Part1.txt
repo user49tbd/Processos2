@@ -1,0 +1,35 @@
+package view;
+
+import javax.swing.JOptionPane;
+
+import Controller.RedesController1;
+
+public class MainClass1 {
+	public static void main(String[]args) {
+		RedesController1 red = new RedesController1();
+		int actdo=0;
+		while(actdo <= 4) {
+			actdo=Integer.parseInt(JOptionPane.showInputDialog("Digite:"+"\n"+"1-Para exibir a  lista de processos"+
+		"\n"+"2-Para excluir um processo pelo ID"+"\n"+
+					"3-Para excluir um processo pelo nome"+"\n"+
+		"4-para procurar por um processo"+"\n"+"5-para finalizar o processo"));
+		switch(actdo) {
+		case 1:
+			red.func2();
+			break;
+		case 3:
+			String name = JOptionPane.showInputDialog("Digite o nome do processo");
+			red.func4(name);
+			break;
+		case 2:
+			int number = Integer.parseInt(JOptionPane.showInputDialog("Digite o numero do processo"));
+			red.func3(number);
+			break;
+		case 4:
+			String nam = JOptionPane.showInputDialog("Digite o nome do processo");
+			red.funcexp(nam);
+			break;
+		}
+	}
+}
+}

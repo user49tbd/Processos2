@@ -1,0 +1,141 @@
+package Controller;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+public class RedesController1 {
+	public static void main(String[]args) {
+		func4("notepad.exe");
+	}
+	public static String os() {
+		String osna = System.getProperty("os.name");
+		return osna;
+		
+	}
+	
+	//-------------------------------------------------------
+	
+	public static void func1(String bufs) {
+		try {
+		Runtime.getRuntime().exec(bufs);
+		}
+		catch(Exception a) {
+			String emsg = a.getMessage();
+			if(emsg.contains("740")) {
+				StringBuffer buf = new StringBuffer();
+				buf.append("cmd /c ");
+				buf.append(bufs);
+				try {
+					Runtime.getRuntime().exec(buf.toString());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else {
+				System.err.println(a);
+			}
+		}
+		}
+	
+	//-------------------------------------------------------
+	
+	public static void func2() {
+		String getso = os();
+		String pros="";
+		if(getso.contains("Windows")) {
+			pros = "TASKLIST /FO TABLE";
+		}else {
+			pros = "ps -ef";
+		}
+		try {
+		Process t = Runtime.getRuntime().exec(pros);
+		InputStream val1 = t.getInputStream();
+		InputStreamReader red = new InputStreamReader(val1);
+		BufferedReader buffer = new BufferedReader(red);
+		String redres = buffer.readLine();
+		while(redres != null) {
+			System.out.println(redres);
+			redres = buffer.readLine();
+		}
+		buffer.close();
+		red.close();
+		val1.close();
+		}
+		catch(Exception a) {
+			String emsg = a.getMessage();
+			System.err.println(emsg);
+		}
+		}
+	//-------------------------------------------------------
+	
+	public static void funcexp(String loc) {
+		String getso = os();
+		String pros="";
+		if(getso.contains("Windows")) {
+			pros = "TASKLIST /FO TABLE";
+		}else {
+			pros = "ps -ef";
+		}
+		try {
+		Process t = Runtime.getRuntime().exec(pros);
+		InputStream val1 = t.getInputStream();
+		InputStreamReader red = new InputStreamReader(val1);
+		BufferedReader buffer = new BufferedReader(red);
+		String redres = buffer.readLine();
+		int cencon=0;
+		while(redres != null) {
+			if(redres.contains(loc)) {
+				System.out.println("--< "+redres+" >--");
+				cencon+=1;
+			}
+			redres = buffer.readLine();
+		}
+		if(cencon==0) {
+			System.out.println("nenhum processo foi encontrado com este nome");
+		}
+		buffer.close();
+		red.close();
+		val1.close();
+		}
+		catch(Exception a) {
+			String emsg = a.getMessage();
+			System.err.println(emsg);
+		}
+		}
+	
+	//-------------------------------------------------------
+	
+	public static void func3(int name1) {
+		String name = String.valueOf(name1);
+		String getso = os();
+		String pros;
+		if(getso.contains("Windows")) {
+			pros = "TASKKILL /PID ";
+		}else {
+			pros = "kill -9 ";
+		}
+		StringBuffer bufs = new StringBuffer();
+		bufs.append(pros);
+		bufs.append(" ");
+		bufs.append(name);
+		String bt = String.valueOf(bufs);
+		func1(bt);
+		}
+	public static void func4(String name) {
+		String getso = os();
+		String pros;
+		if(getso.contains("Windows")) {
+			pros = "TASKKILL /IM ";
+		}else {
+			pros = " pkill -f ";
+		}
+		StringBuffer bufs = new StringBuffer();
+		bufs.append(pros);
+		bufs.append(" ");
+		bufs.append(name);
+		String bt = String.valueOf(bufs);
+		func1(bt);
+		}
+}
